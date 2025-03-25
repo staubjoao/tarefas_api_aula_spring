@@ -1,11 +1,5 @@
 package com.uem.tarefasAPI.dto;
 
-import lombok.Data;
-
-@Data
-public class CategoriaDTO {
+public record CategoriaDTO(String nome, String descricao) {
     
-    private String nome;
-
-    private String descricao;
 }

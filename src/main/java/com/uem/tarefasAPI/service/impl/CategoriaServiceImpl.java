@@ -25,8 +25,8 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria categoria = new Categoria();
         LocalDateTime dataHoraAtual = LocalDateTime.now();
 
-        categoria.setNome(categoriaDTO.getNome());
-        categoria.setDescricao(categoriaDTO.getDescricao());
+        categoria.setNome(categoriaDTO.nome());
+        categoria.setDescricao(categoriaDTO.descricao());
         categoria.setDataCriacao(dataHoraAtual);
         categoria.setDataAlteracao(dataHoraAtual);
 
@@ -37,15 +37,15 @@ public class CategoriaServiceImpl implements CategoriaService {
         Optional<Categoria> opCategoria = categoriaRepository.findById(idCategoria);
 
         if (opCategoria.isEmpty()) {
-            new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
+            throw new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
         }
 
         Categoria categoria = opCategoria.get();
 
         LocalDateTime dataHoraAtual = LocalDateTime.now();
 
-        categoria.setNome(categoriaDTO.getNome());
-        categoria.setDescricao(categoriaDTO.getDescricao());
+        categoria.setNome(categoriaDTO.nome());
+        categoria.setDescricao(categoriaDTO.descricao());
         categoria.setDataAlteracao(dataHoraAtual);
 
         return categoriaRepository.save(categoria);
@@ -55,7 +55,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         Optional<Categoria> opCategoria = categoriaRepository.findById(idCategoria);
 
         if (opCategoria.isEmpty()) {
-            new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
+            throw new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
         }
 
         return opCategoria.get();
@@ -69,7 +69,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         Optional<Categoria> opCategoria = categoriaRepository.findById(idCategoria);
 
         if (opCategoria.isEmpty()) {
-            new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
+            throw new EntidadeNaoEncontradaException("Categoria com id " + idCategoria + " não foi encontrada");
         }
 
         categoriaRepository.delete(opCategoria.get());

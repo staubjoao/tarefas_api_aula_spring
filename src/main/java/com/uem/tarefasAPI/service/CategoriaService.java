@@ -7,13 +7,13 @@ import com.uem.tarefasAPI.model.Categoria;
 
 public interface CategoriaService {
     
-    public Categoria salvarCategoria(CategoriaDTO categoriaDTO);
+    Categoria salvarCategoria(CategoriaDTO categoriaDTO);
 
-    public Categoria alterarCategoria(CategoriaDTO categoriaDTO, Long idCategoria);
+    Categoria alterarCategoria(CategoriaDTO categoriaDTO, Long idCategoria);
 
-    public Categoria buscarCategoriaPorId(Long idCategoria);
+    Categoria buscarCategoriaPorId(Long idCategoria);
 
-    public List<Categoria> buscarTodasCategorias();
+    List<Categoria> buscarTodasCategorias();
 
-    public void deletarCategoria(Long idCategoria);
+    void deletarCategoria(Long idCategoria);
 }

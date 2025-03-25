@@ -25,10 +25,10 @@ public class Categoria {
     @Column(length = 500)
     private String descricao;
 
-    @Column(name = "data_criacao" ,nullable = false)
+    @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
-    @Column(name = "data_alteracao" ,nullable = false)
+    @Column(name = "data_alteracao", nullable = false)
     private LocalDateTime dataAlteracao;
 
 }
