@@ -1,5 +1,6 @@
 package com.uem.tarefasAPI.model;
 
+import com.uem.tarefasAPI.model.enums.StatusTarefa;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,4 +34,8 @@ public class Tarefa {
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusTarefa status;
 }
