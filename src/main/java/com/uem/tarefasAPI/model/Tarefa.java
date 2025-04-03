@@ -38,4 +38,7 @@ public class Tarefa {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusTarefa status;
+
+    @Column(name = "data_final", nullable = false)
+    private LocalDateTime dataFinal;
 }

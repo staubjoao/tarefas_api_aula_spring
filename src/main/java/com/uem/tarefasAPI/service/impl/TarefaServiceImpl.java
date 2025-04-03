@@ -35,6 +35,7 @@ public class TarefaServiceImpl implements TarefaService {
         tarefa.setTitulo(tarefaDTO.titulo());
         tarefa.setDescricao(tarefaDTO.descricao());
         tarefa.setStatus(tarefaDTO.status());
+        tarefa.setDataFinal(tarefaDTO.dataFinal());
         tarefa.setConcluida(false);
         tarefa.setAtiva(true);
         tarefa.setDataCriacao(dataHoraAtual);
@@ -55,6 +56,7 @@ public class TarefaServiceImpl implements TarefaService {
         Tarefa tarefa = opTarefa.get();
         tarefa.setTitulo(tarefaDTO.titulo());
         tarefa.setStatus(tarefaDTO.status());
+        tarefa.setDataFinal(tarefaDTO.dataFinal());
         tarefa.setDescricao(tarefaDTO.descricao());
         tarefa.setDataAlteracao(dataHoraAtual);
 
