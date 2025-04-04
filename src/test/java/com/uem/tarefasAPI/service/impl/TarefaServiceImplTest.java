@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import com.uem.tarefasAPI.dto.TarefaDTO;
 import com.uem.tarefasAPI.exception.EntidadeNaoEncontradaException;
 import com.uem.tarefasAPI.model.Categoria;
 import com.uem.tarefasAPI.model.Tarefa;
+import com.uem.tarefasAPI.model.enums.StatusTarefa;
 import com.uem.tarefasAPI.repository.TarefaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,8 +39,13 @@ class TarefaServiceImplTest {
     private TarefaDTO tarefaDTO;
     private Categoria categoria;
 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
     @BeforeEach
     void setUp() {
+        String dataString = "2023-12-15T14:30:00";
+        LocalDateTime dataHora = LocalDateTime.parse(dataString, formatter);
+
         categoria = new Categoria();
         categoria.setId(1L);
         categoria.setNome("Trabalho");
@@ -49,11 +56,18 @@ class TarefaServiceImplTest {
         tarefa.setDescricao("Preparar apresentação para reunião");
         tarefa.setConcluida(false);
         tarefa.setAtiva(true);
+        tarefa.setStatus(StatusTarefa.PENDENTE);
         tarefa.setDataCriacao(LocalDateTime.now());
         tarefa.setDataAlteracao(LocalDateTime.now());
         tarefa.setCategoria(categoria);
 
-        tarefaDTO = new TarefaDTO("Reunião importante", "Preparar apresentação para reunião", 1L);
+        tarefaDTO = new TarefaDTO(
+                "Reunião importante",
+                "Preparar apresentação para reunião",
+                1L,
+                StatusTarefa.PENDENTE,
+                dataHora
+        );
     }
 
     @Test
@@ -69,8 +83,9 @@ class TarefaServiceImplTest {
         assertNotNull(resultado);
         assertEquals(tarefaDTO.titulo(), resultado.getTitulo());
         assertEquals(tarefaDTO.descricao(), resultado.getDescricao());
-        assertFalse(resultado.getConcluida());
-        assertTrue(resultado.getAtiva());
+        assertEquals(tarefaDTO.status(), resultado.getStatus());
+        assertFalse(resultado.isConcluida());
+        assertTrue(resultado.isAtiva());
         assertNotNull(resultado.getDataCriacao());
         assertNotNull(resultado.getDataAlteracao());
         assertEquals(categoria, resultado.getCategoria());
@@ -83,7 +98,17 @@ class TarefaServiceImplTest {
     void alterarTarefa_QuandoTarefaExiste_DeveRetornarTarefaAtualizada() {
         // Arrange
         Long id = 1L;
-        TarefaDTO novoDTO = new TarefaDTO("Reunião atualizada", "Nova descrição", 2L);
+        String novaDataString = "2023-12-20T15:45:00";
+        LocalDateTime novaDataHora = LocalDateTime.parse(novaDataString, formatter);
+
+        TarefaDTO novoDTO = new TarefaDTO(
+                "Reunião atualizada",
+                "Nova descrição",
+                2L,
+                StatusTarefa.EM_ANDAMENTO,
+                novaDataHora
+        );
+
         Categoria novaCategoria = new Categoria();
         novaCategoria.setId(2L);
 
@@ -98,6 +123,7 @@ class TarefaServiceImplTest {
         assertNotNull(resultado);
         assertEquals(novoDTO.titulo(), resultado.getTitulo());
         assertEquals(novoDTO.descricao(), resultado.getDescricao());
+        assertEquals(novoDTO.status(), resultado.getStatus());
         assertNotNull(resultado.getDataAlteracao());
         assertEquals(novaCategoria, resultado.getCategoria());
 
@@ -220,7 +246,7 @@ class TarefaServiceImplTest {
     void manipularAtividadeTarefa_QuandoTarefaExiste_DeveAlternarAtividade() {
         // Arrange
         Long id = 1L;
-        boolean estadoOriginal = tarefa.getAtiva();
+        boolean estadoOriginal = tarefa.isAtiva();
 
         when(tarefaRepository.findById(id)).thenReturn(Optional.of(tarefa));
         when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
@@ -229,7 +255,7 @@ class TarefaServiceImplTest {
         tarefaService.manipularAtividadeTarefa(id);
 
         // Assert
-        assertEquals(!estadoOriginal, tarefa.getAtiva());
+        assertEquals(!estadoOriginal, tarefa.isAtiva());
         verify(tarefaRepository, times(1)).findById(id);
         verify(tarefaRepository, times(1)).save(tarefa);
     }
@@ -245,7 +271,7 @@ class TarefaServiceImplTest {
         tarefaService.concluirTarefa(id);
 
         // Assert
-        assertTrue(tarefa.getConcluida());
+        assertTrue(tarefa.isConcluida());
         verify(tarefaRepository, times(1)).findById(id);
         verify(tarefaRepository, times(1)).save(tarefa);
     }
