@@ -107,7 +107,7 @@ public class TarefaServiceImpl implements TarefaService {
         }
 
         Tarefa tarefa = opTarefa.get();
-        tarefa.setAtiva(!tarefa.getAtiva());
+        tarefa.setAtiva(!tarefa.isAtiva());
         tarefaRepository.save(tarefa);
     }
 
