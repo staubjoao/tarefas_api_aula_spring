@@ -18,9 +18,9 @@ public class Tarefa extends EntidadeBase {
     @Column(length = 500)
     private String descricao;
 
-    private Boolean concluida;
+    private boolean concluida;
 
-    private Boolean ativa;
+    private boolean ativa;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
