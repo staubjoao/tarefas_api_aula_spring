@@ -1,5 +1,6 @@
 package com.uem.tarefasAPI.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.uem.tarefasAPI.model.enums.StatusTarefa;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -40,5 +41,6 @@ public class Tarefa {
     private StatusTarefa status;
 
     @Column(name = "data_final", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataFinal;
 }
